@@ -1,20 +1,5 @@
 This is just my personal fork of [SpoolEase](https://github.com/yanshay/SpoolEase). I restyled the Console UI on the stock 0.7 branch. Same features as 0.7, not an official build.
 
-<table>
-<tr>
-<th width="50%">stock</th>
-<th width="50%">this</th>
-</tr>
-<tr>
-<td width="50%"><img src="docs/StockMainPage.png" width="400" alt="stock main"></td>
-<td width="50%"><img src="docs/MainPage.png" width="400" alt="main"></td>
-</tr>
-<tr>
-<td width="50%"><img src="docs/StockSpoolPage.png" width="400" alt="stock spool"></td>
-<td width="50%"><img src="docs/SpoolPage.png" width="400" alt="spool"></td>
-</tr>
-</table>
-
 Mostly visual stuff: darker buttons, rounded spool cards, black number chips. Gross weight has a green background. If you tap a spool, the whole top bar is that filament color instead of a thin strip. Also bumped HAL to 0.6.11 so wifi reconnect still works, and I had to drop some unused wifi pills because the compiler choked on them.
 
 Browser flasher is here (Chrome or Edge): https://therzog92.github.io/SpoolEase/
