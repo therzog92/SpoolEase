@@ -34,13 +34,13 @@ export component MultiColorTitle inherits Rectangle {
     in property <[color]> colors;
     in property <color> fallback-color: #4f6bce;
     in property <TextHorizontalAlignment> horizontal-alignment: center;
-    height: 44px;
+    height: 40px;
     clip: true;
     border-width: 0px;
     property <int> color-count: colors.length;
     property <length> stripe-width: color-count > 0 ? root.width / color-count : 0px;
     property <bool> show-color-fill: !push-button || pushed;
-    property <length> title-font-size: push-button ? 18px : 20px;
+    property <length> title-font-size: 20px;
 
     background: #101116;
 
@@ -119,10 +119,8 @@ export enum SpoolDisplayMode {
 }
 
 component WeightsDisplay inherits Rectangle {
-    background: #14161c;
-    border-radius: 12px;
-    clip: true;
-    in-out property <length> vert-spacing: 4px;
+    background: transparent;
+    in-out property <length> vert-spacing: 2px;
     in-out property <string> weight-label;
     in-out property <string> weight-empty;
     in-out property <string> weight-full;
@@ -130,56 +128,41 @@ component WeightsDisplay inherits Rectangle {
     in-out property <string> weight-gross;
 
     HorizontalLayout {
-        spacing: 0px;
+        spacing: 10px;
         padding: 0px;
+        TitledText {
+            vert-spacing: vert-spacing;
+            label: "Label";
+            text: weight-label;
+        }
 
-        HorizontalLayout {
-            horizontal-stretch: 4;
-            padding: 12px;
-            spacing: 0px;
-            TitledText {
-                horizontal-stretch: 1;
-                vert-spacing: vert-spacing;
-                label: "Label";
-                text: weight-label;
-            }
+        TitledText {
+            vert-spacing: vert-spacing;
+            label: "Empty";
+            text: weight-empty;
+        }
 
-            TitledText {
-                horizontal-stretch: 1;
-                vert-spacing: vert-spacing;
-                label: "Empty";
-                text: weight-empty;
-            }
+        TitledText {
+            vert-spacing: vert-spacing;
+            label: "Full";
+            text: weight-full;
+        }
 
-            TitledText {
-                horizontal-stretch: 1;
-                vert-spacing: vert-spacing;
-                label: "Full";
-                text: weight-full;
-            }
-
-            TitledText {
-                horizontal-stretch: 1;
-                vert-spacing: vert-spacing;
-                label: "Net";
-                text: weight-net;
-            }
+        TitledText {
+            vert-spacing: vert-spacing;
+            label: "Net";
+            text: weight-net;
         }
 
         Rectangle {
-            horizontal-stretch: 1;
             background: #2d5340;
-            border-radius: 12px;
-            HorizontalLayout {
-                padding: 12px;
-                TitledText {
-                    horizontal-stretch: 1;
-                    vert-spacing: vert-spacing;
-                    label: "Gross";
-                    text: weight-gross;
-                    label-color: #c5ddce;
-                    text-color: #f4f7f2;
-                }
+            border-radius: 8px;
+            TitledText {
+                vert-spacing: vert-spacing;
+                label: "Gross";
+                text: weight-gross;
+                label-color: #c5ddce;
+                text-color: #f4f7f2;
             }
         }
     }
@@ -205,17 +188,14 @@ export component SpoolDisplay inherits Rectangle {
         VerticalLayout {
             alignment: stretch;
             vertical-stretch: 1;
-            padding: 16px;
-            padding-bottom: 8px;
-            spacing: 2px;
+            padding: 10px;
+            padding-bottom: 5px;
             property <string> brand: spool-display.spool-record.brand == "" ? "" : "\{spool-display.spool-record.brand} ";
             property <string> material-subtype: spool-display.spool-record.material-subtype == "" ? "" : " \{spool-display.spool-record.material_subtype}";
             property <string> color-name: spool-display.spool-record.color-name == "" ? "" : " \{spool-display.spool-record.color-name}";
             MyText {
-                vertical-stretch: 0;
-                horizontal-alignment: left;
-                font-size: 22px;
-                font-weight: 700;
+                vertical-stretch: 1;
+                horizontal-alignment: center;
                 text: "\{brand}\{spool-display.spool-record.material-type}\{material-subtype}\{color-name}";
                 color: #f2eee4;
             }
@@ -264,16 +244,16 @@ export component SpoolDisplay inherits Rectangle {
                 text: spool-display.assigned-location!="" ? spool-display.assigned-location + " (Assigned)" : "None assigned";
             }
 
-            if mode != SpoolDisplayMode.ImportTagDefinition: Text {
-                vertical-stretch: 0;
-                font-size: 14px;
-                font-weight: 700;
-                color: #8b93a3;
-                text: "WEIGHTS";
-            }
-
             HorizontalLayout {
                 vertical-stretch: 1;
+                VerticalLayout {
+                    LabeledInfo {
+                        width: 90px;
+                        label: "Weights";
+                        text: "";
+                    }
+                }
+
                 WeightsDisplay {
                     pure function calc-net(weight_new: int, weight_current: int, weight_core: int, weight_advertised: int, consumed_since_weight: float) -> int {
                         // code from inventory adjusted to here

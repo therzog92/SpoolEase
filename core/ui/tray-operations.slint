@@ -19,7 +19,7 @@ component SlotDisplayStep inherits Rectangle {
     VerticalLayout {
         HorizontalLayout {
             vertical-stretch: 0;
-            height: 44px;
+            height: 40px;
             MultiColorTitle {
                 width: spool-id != "" ? FrameworkState.display-width / 2 : FrameworkState.display-width;
                 push-button: true;
@@ -44,22 +44,28 @@ component SlotDisplayStep inherits Rectangle {
             }
         }
 
-        if root.tab == SlotDisplayTab.Spool: SpoolDisplay {
+        Rectangle {
             vertical-stretch: 1;
-            show-title: false;
-            spool-display: root.spool-display;
-        }
+            min-height: 0px;
+            clip: true;
 
-        if root.tab == SlotDisplayTab.Slot: SlotDisplay {
-            vertical-stretch: 1;
-            slot: root.slot;
+            if root.tab == SlotDisplayTab.Spool: SpoolDisplay {
+                width: parent.width;
+                height: parent.height;
+                show-title: false;
+                spool-display: root.spool-display;
+            }
+
+            if root.tab == SlotDisplayTab.Slot: SlotDisplay {
+                width: parent.width;
+                height: parent.height;
+                slot: root.slot;
+            }
         }
 
         HorizontalLayout {
             vertical-stretch: 0;
-            height: 64px;
-            padding: 8px;
-            spacing: 8px;
+            height: 56px;
             MyButton {
                 visible: false;
                 text: "Unload";

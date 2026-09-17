@@ -15,8 +15,7 @@ export component SpoolStaging inherits Rectangle {
             Text {
                 color: #d7dce8;
                 text: AppState.spool-staging-state == SpoolStagingState.Empty ? "Staging" : AppState.spool-staging-state == SpoolStagingState.Scanned ? "Scanned" : AppState.spool-staging-state == SpoolStagingState.Encoded ? "Encoded" : "Unloaded";
-                font-size: 16px;
-                font-weight: 600;
+                font-size: 20px;
             }
         }
 

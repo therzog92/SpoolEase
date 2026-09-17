@@ -46,11 +46,11 @@ component SlotGroupTab inherits Rectangle {
         border-radius: 10px;
 
         HorizontalLayout {
-            padding-top: 6px;
-            padding-bottom: 8px;
+            padding-top: 6px + (active ? 0px : 3px);
+            padding-bottom: active ? 0px : 3px;
             padding-left: 6px;
             padding-right: 6px;
-            spacing: 4px;
+            spacing: 3px + (active ? 0px : 3px);
 
             for slot in group.slots: block := Rectangle {
                 horizontal-stretch: 0;
@@ -314,8 +314,7 @@ component Spool inherits Rectangle {
         material := Text {
             height: 18px;
             horizontal-alignment: center;
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 20px;
             text: has-known-color ? slot.filament.material : "??";
             color: has-known-color ? Utils.contrasting_color(root.outer-display-color[0]) : AppConsts.text-on-chrome;
         }
@@ -323,8 +322,7 @@ component Spool inherits Rectangle {
         k-value := Text {
             height: 20px;
             horizontal-alignment: center;
-            font-size: 16px;
-            font-weight: 500;
+            font-size: 20px;
             text: has-known-color && slot.k != "" ? "K " + slot.k : "";
             color: has-known-color ? Utils.contrasting_color(root.outer-display-color[0]) : AppConsts.text-on-chrome;
         }
@@ -408,14 +406,11 @@ component SlotGroupPanel inherits VerticalLayout {
 
             if !is-primary-group: Text {
                 text: group.name;
-                font-size: 18px;
-                font-weight: 600;
+                font-size: 20px;
                 color: #d7dce8;
             }
 
             if is-primary-group: HorizontalLayout {
-                padding: 4px;
-                spacing: 4px;
                 for slot-group[idx] in AppState.primary-slot-groups: SlotGroupTab {
                     height: parent.height;
                     group: slot-group;

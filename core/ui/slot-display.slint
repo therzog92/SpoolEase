@@ -19,20 +19,16 @@ export component SlotDisplay inherits Rectangle {
 
     VerticalLayout {
         alignment: stretch;
-        padding: 16px;
-        padding-bottom: 8px;
-        spacing: 2px;
         Rectangle {
-            vertical-stretch: 0;
-            height: 36px;
+            vertical-stretch: 1;
             MyText {
                 text: display.filament-title;
-                font-size: 22px;
-                font-weight: 700;
                 color: #f2eee4;
-                horizontal-alignment: left;
             }
         }
+
+        padding: 10px;
+        padding-bottom: 5px;
 
         LabeledInfo {
             vertical-stretch: 1;

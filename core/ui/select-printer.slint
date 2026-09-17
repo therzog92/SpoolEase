@@ -1,6 +1,5 @@
-import { MyButton } from "./framework/widgets.slint";
+import { MyButton, ButtonType } from "./framework/widgets.slint";
 import { AppBackend, AppState, Printer } from "app.slint";
-import { Title } from "framework/widgets.slint";
 
 export component Title inherits Rectangle {
     in-out property <string> text;
@@ -20,8 +19,10 @@ export component Title inherits Rectangle {
 
 export component SelectPrinterButton inherits MyButton {
     in-out property <Printer> printer;
+    type: ButtonType.RadioButton;
     height: 56px;
     horizontal-alignment: left;
+    text-padding: 12px;
 }
 
 export component SelectPrinter inherits Rectangle {
@@ -32,11 +33,12 @@ export component SelectPrinter inherits Rectangle {
             text: "Select Printer";
         }
         VerticalLayout {
-            spacing: 8px;
-            padding: 8px;
+            padding: 5px;
+            spacing: 5px;
             for printer[index] in AppState.available_printers: SelectPrinterButton {
                 printer: printer;
                 height: 60px;
+                pushed: AppState.curr_printer == index;
                 text: (AppState.curr_printer == index ? "  ✓ " : "      ") + printer.name + (AppState.default_printer == index ? " (Default)" : "") + (printer.connected ? ": Connected" : ": Disconnected");
                 clicked => {
                     AppBackend.select-printer(printer.id);

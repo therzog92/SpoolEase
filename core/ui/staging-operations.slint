@@ -18,14 +18,19 @@ component SpoolDisplayStep inherits Rectangle {
     in property <UiSpoolRecordDisplay> spool-display;
     VerticalLayout {
 
-        SpoolDisplay {
-            spool-display: root.spool-display;
+        Rectangle {
+            vertical-stretch: 1;
+            min-height: 0px;
+            clip: true;
+            SpoolDisplay {
+                width: parent.width;
+                height: parent.height;
+                spool-display: root.spool-display;
+            }
         }
 
         HorizontalLayout {
-            height: 64px;
-            padding: 8px;
-            spacing: 8px;
+            height: 56px;
             if AppState.spool-scale-state != SpoolScaleState.NotAvailable: MyButton {
                 enabled: AppState.spool-staging-state != SpoolStagingState.Empty && AppState.is-scale-usable-now();
                 text: "Quick Weight";

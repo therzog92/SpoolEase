@@ -31,8 +31,7 @@ export component MyButton inherits Rectangle {
         width: parent.width - text-padding * 2;
         horizontal-alignment: root.horizontal-alignment;
         text: root.text;
-        font-size: 18px;
-        font-weight: 700;
+        font-size: 20px;
         wrap: word-wrap;
         color: (type == ButtonType.Standard) ? (enabled ? #ffffff : #8b93a3) : (enabled ? text-color : #6b7385);
     }
