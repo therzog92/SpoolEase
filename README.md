@@ -1,3 +1,17 @@
+This is just my personal fork of [SpoolEase](https://github.com/yanshay/SpoolEase). I restyled the Console UI on the stock 0.7 branch. Same features as 0.7, not an official build.
+
+![main page](docs/MainPage.png)
+
+![spool page](docs/SpoolPage.png)
+
+Mostly visual stuff: darker buttons, rounded spool cards, black number chips. Gross weight has a green background. If you tap a spool, the whole top bar is that filament color instead of a thin strip. Also bumped HAL to 0.6.11 so wifi reconnect still works, and I had to drop some unused wifi pills because the compiler choked on them.
+
+Browser flasher is here (Chrome or Edge): https://therzog92.github.io/SpoolEase/
+
+Haven't tested it on a board yet. Waiting for mine to show up.
+
+---
+
 # SpoolEase System
 
 SpoolEase is a smart add-on system for Bambu Lab 3D printers that adds intelligence and control to every filament spool.

@@ -2,7 +2,7 @@ import { ListView } from "std-widgets.slint";
 
 export component MyText inherits Text {
     font-size: 20px;
-    color: black;
+    color: #d7dce8;
 }
 
 export enum ButtonType {
@@ -19,21 +19,22 @@ export component MyButton inherits Rectangle {
     in property <length> text-padding;
     in property <bool> enabled: true;
     in-out property <bool> pushed: false;
-    in property <color> pushed-background: lightgreen;
-    in property <color> released-background: white;
-    in property <color> text-color: black; 
+    in property <color> pushed-background: #2a3148;
+    in property <color> released-background: #14161c;
+    in property <color> text-color: #d7dce8;
     in property <TextHorizontalAlignment> horizontal-alignment: center;
     callback clicked;
-    background: (type == ButtonType.Standard) ? (enabled ? @linear-gradient(20deg, #3559E0 0%, #c2cdf6 100%) : @linear-gradient(20deg, #5C5C5C 0%, #CFCFCF 100%)) : ((enabled && area.pressed) || pushed ? pushed-background : released-background);
+    border-radius: 12px;
+    background: (type == ButtonType.Standard) ? (enabled ? #1c1e26 : #14151a) : ((enabled && area.pressed) || pushed ? pushed-background : released-background);
     Text {
         x: text-padding;
         width: parent.width - text-padding * 2;
         horizontal-alignment: root.horizontal-alignment;
         text: root.text;
-        font-size: 20px;
-        font-weight: 400 + (enabled && area.pressed && type == ButtonType.Standard ? 500 : 0);
+        font-size: 18px;
+        font-weight: 700;
         wrap: word-wrap;
-        color: enabled ? text-color : #666666;
+        color: (type == ButtonType.Standard) ? (enabled ? #ffffff : #8b93a3) : (enabled ? text-color : #6b7385);
     }
 
     area := TouchArea {
@@ -60,8 +61,9 @@ export component MyButton inherits Rectangle {
         // to add the border - slint software renderer doen't do gradents with border
         width: root.width;
         height: root.height;
-        border-color: black;
-        border-width: 1px + ((enabled && area.pressed) || pushed ? 2px : 0px);
+        border-radius: 12px;
+        border-color: #00000000;
+        border-width: 0px;
     }
 }
 
@@ -69,10 +71,10 @@ export component Title inherits Rectangle {
     in-out property <string> text;
     in-out property <string> text2;
     height: 40px;
-    background: green.brighter(1.0);
-    in-out property <color> text-color: black;
-    border-color: black;
-    border-width: 1px;
+    background: @linear-gradient(180deg, #1a1c24 0%, #101116 100%);
+    in-out property <color> text-color: #ffffff;
+    border-color: #00000000;
+    border-width: 0px;
     in property <TextHorizontalAlignment> horizontal-alignment: center;
     in property <TextHorizontalAlignment> horizontal-alignment2: center;
     title-timer := Timer {
@@ -92,6 +94,7 @@ export component Title inherits Rectangle {
         text: title-timer.text-index == 0 ? text : text2;
         color: text-color;
         font-size: 20px;
+        font-weight: 600;
     }
 }
 
@@ -125,7 +128,7 @@ export component Selector inherits Rectangle {
     in property <TextHorizontalAlignment> option-alignment: center;
     in-out property <string> selector-title;
     in property <length> scroll-px-per-sec: 320px;
-    background: white;
+    background: #0b0c10;
     VerticalLayout {
         if root.selector-title != "": title := Title {
             z: 1;
@@ -349,11 +352,14 @@ export component LeftTab inherits Rectangle {
     in property <[string]> tabs;
     in property <string> bottom-tab;
 
-    background: white;
+    background: #0b0c10;
     width: 56px; // default width
     VerticalLayout {
         alignment: space-between;
+        padding: 4px;
+        spacing: 8px;
         VerticalLayout {
+            spacing: 8px;
             for tab[index] in tabs: MyButton {
                 height: buttons-height;
                 text: tab;
@@ -376,14 +382,14 @@ export component LeftTab inherits Rectangle {
     Rectangle {
         width: root.width;
         height: root.height;
-        border-color: black;
-        border-width: 1px;
+        border-color: #2e3545;
+        border-width: 0px;
     }
 }
 
 export component HorizontalSelector inherits Rectangle {
-    in property <brush> selected-color: lightgreen;
-    in property <brush> unselected-color: lightgrey;
+    in property <brush> selected-color: #2a3148;
+    in property <brush> unselected-color: #14161c;
     in property <length> buttons-width: self.height;
     in property <length> min-button-width: 100px;
     in property <[string]> options;
@@ -434,7 +440,7 @@ export component HorizontalSelector inherits Rectangle {
                 border-width: 1px;
                 MyText {
                     text: option;
-                    color: option == selected-option ? black : gray;
+                    color: option == selected-option ? #d7dce8 : #8b93a3;
                 }
 
                 TouchArea {

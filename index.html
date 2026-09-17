@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>flash</title>
+</head>
+<body>
+<p>flashes custom firmware (UI changes)-- not tested, waiting for board to arrive</p>
+<p>
+<button id="newBtn" type="button">new install</button>
+<button id="upgradeBtn" type="button">upgrade</button>
+</p>
+<pre id="status"></pre>
+<script type="module">
+  import { ESPLoader, Transport } from "https://unpkg.com/esptool-js@0.6.1/bundle.js";
+
+  const APP_OFFSET = 0x200000;
+  const statusEl = document.getElementById("status");
+
+  function log(msg) {
+    statusEl.textContent += msg + "\n";
+  }
+
+  async function loadFirmware(path) {
+    const resp = await fetch(path + "?cb=" + Date.now(), { cache: "no-store" });
+    if (!resp.ok) throw new Error("missing " + path + " (" + resp.status + ")");
+    const firmware = new Uint8Array(await resp.arrayBuffer());
+    if (firmware.length < 1024) throw new Error("file too small");
+    return firmware;
+  }
+
+  async function flash({ path, address, eraseAll, label }) {
+    statusEl.textContent = "";
+    document.getElementById("newBtn").disabled = true;
+    document.getElementById("upgradeBtn").disabled = true;
+    try {
+      log("loading " + label);
+      const firmware = await loadFirmware(path);
+      log((firmware.length / 1048576).toFixed(2) + " MB, pick the board in the popup");
+      const port = await navigator.serial.requestPort();
+      const transport = new Transport(port, false);
+      const esploader = new ESPLoader({
+        transport,
+        baudrate: 460800,
+        terminal: {
+          clean() {},
+          writeLine(d) { log(d.replace(/\s+$/, "")); },
+          write(d) { statusEl.textContent += d; },
+        },
+      });
+      log("connecting");
+      await esploader.main();
+      log(eraseAll ? "erasing + flashing" : "flashing (no erase)");
+      await esploader.writeFlash({
+        fileArray: [{ data: firmware, address }],
+        flashMode: "dio",
+        flashFreq: "80m",
+        flashSize: "16MB",
+        eraseAll,
+        compress: true,
+        reportProgress(_fileIndex, written, total) {
+          if (total) log(Math.round((written / total) * 100) + "%");
+        },
+      });
+      log("done, resetting");
+      await transport.setDTR(false);
+      await transport.setRTS(true);
+      await new Promise((r) => setTimeout(r, 120));
+      await transport.setRTS(false);
+      await new Promise((r) => setTimeout(r, 800));
+      await transport.disconnect();
+      log("ok");
+    } catch (err) {
+      log(String(err && err.message ? err.message : err));
+      log("use chrome/edge and a data usb-c cable. if nothing shows up, hold BOOT while plugging in.");
+    } finally {
+      document.getElementById("newBtn").disabled = false;
+      document.getElementById("upgradeBtn").disabled = false;
+    }
+  }
+
+  document.getElementById("newBtn").onclick = () =>
+    flash({
+      path: "./firmware/console-factory.bin",
+      address: 0x0,
+      eraseAll: true,
+      label: "factory",
+    });
+  document.getElementById("upgradeBtn").onclick = () =>
+    flash({
+      path: "./firmware/console-app.bin",
+      address: APP_OFFSET,
+      eraseAll: false,
+      label: "app",
+    });
+</script>
+</body>
+</html>

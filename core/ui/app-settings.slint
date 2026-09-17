@@ -14,7 +14,7 @@ export component ScalesInformation inherits Rectangle {
     callback clicked;
     property <string> remote-scale-info: AppBackend.get-connected-scale-info();
 
-    background: white;
+    background: #0b0c10;
     VerticalLayout {
         alignment: space-between;
         VerticalLayout {
@@ -79,6 +79,8 @@ export component AppSettings inherits Settings {
         x: parent.x-offset;
         y: parent.y-offset;
         width: parent.buttons-width;
+        spacing: 8px;
+        padding: 8px;
 
         SettingsButton {
             text: "Calibrate Scale";

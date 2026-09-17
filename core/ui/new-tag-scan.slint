@@ -28,7 +28,7 @@ enum AddSelection {
 }
 
 component SpoolDefinitionTagScannedPage inherits Rectangle {
-    background: white;
+    background: #0b0c10;
     property <AddSelection> add-selection: None;
 
     function pressed(operation: AddSelection) {
@@ -116,7 +116,7 @@ enum NewOrUsedSelection {
 component BambulabSpoolTypePage inherits Rectangle {
     // width: 480px;
     // height: 320px;
-    background: white;
+    background: #0b0c10;
     property <BambulabSpoolTypeSelection> spool-selection: None;
     property <NewOrUsedSelection> spool-new-or-used: None;
 
@@ -224,7 +224,7 @@ component BambulabSpoolTypePage inherits Rectangle {
 component OperationSelectionStep inherits Rectangle {
     // width: 480px;
     // height: 320px;
-    background: white;
+    background: #0b0c10;
 
     pure function staged-spool-id() -> string {
         return AppState.spool-staging-info.spool-record.id;
@@ -341,7 +341,7 @@ component OperationSelectionStep inherits Rectangle {
 }
 
 component SpoolSelectStep inherits Rectangle {
-    background: white;
+    background: #0b0c10;
     in-out property <int> spool-id: num-pad.number;
     VerticalLayout {
         Title {
@@ -385,7 +385,7 @@ component V1TagPromptStep inherits Rectangle {
     function pressed(operation: NewTagOperation) {
         selected-operation = selected-operation == operation ? NewTagOperation.None : operation;
     }
-    background: white;
+    background: #0b0c10;
     VerticalLayout {
         Title {
             text: "Early Version Tag That's Not in Inventory";
@@ -524,7 +524,7 @@ component ImportDefinitionNoticePage inherits Rectangle {
         }
 
         Rectangle {
-            background: white;
+            background: #0b0c10;
 
             VerticalLayout {
                 alignment: space-around;

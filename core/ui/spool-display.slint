@@ -32,21 +32,25 @@ export component MultiColorTitle inherits Rectangle {
     in-out property <bool> pushed: false;
     in property <string> text;
     in property <[color]> colors;
-    in property <color> fallback-color: green.brighter(1.0);
+    in property <color> fallback-color: #4f6bce;
     in property <TextHorizontalAlignment> horizontal-alignment: center;
-    height: 40px;
-    border-color: black;
-    border-width: 1px;
+    height: 44px;
+    clip: true;
+    border-width: 0px;
     property <int> color-count: colors.length;
     property <length> stripe-width: color-count > 0 ? root.width / color-count : 0px;
+    property <bool> show-color-fill: !push-button || pushed;
+    property <length> title-font-size: push-button ? 18px : 20px;
 
-    Image {
+    background: #101116;
+
+    if show-color-fill: Image {
         width: parent.width;
         height: parent.height;
         source: AppState.title-checkerboard-bg;
     }
 
-    if ((push-button && pushed) || !push-button) && color-count > 0: HorizontalLayout {
+    if show-color-fill && color-count > 0: HorizontalLayout {
         width: parent.width;
         height: parent.height;
         spacing: 0px;
@@ -63,12 +67,13 @@ export component MultiColorTitle inherits Rectangle {
                 horizontal-alignment: root.horizontal-alignment;
                 text: root.text;
                 color: Utils.contrasting_color(stripe-color);
-                font-size: 20px;
+                font-size: root.title-font-size;
+                font-weight: 700;
             }
         }
     }
 
-    if ((push-button && pushed) || !push-button) && (color-count == 0): Rectangle {
+    if show-color-fill && color-count == 0: Rectangle {
         width: parent.width;
         height: parent.height;
         background: fallback-color;
@@ -79,25 +84,20 @@ export component MultiColorTitle inherits Rectangle {
             horizontal-alignment: root.horizontal-alignment;
             text: root.text;
             color: Utils.contrasting_color(parent.background);
-            font-size: 20px;
+            font-size: root.title-font-size;
+            font-weight: 700;
         }
     }
-    // border and (white background if not selected)
-    Rectangle {
+
+    if push-button && !pushed: Text {
         width: parent.width;
         height: parent.height;
-        background: (push-button && !pushed) ? white : transparent;
-        border-color: black;
-        border-width: 1px + ((push-button && area.pressed) || (push-button && pushed) ? 2px : 0px);
-        if (push-button && !pushed): Text {
-            width: parent.width;
-            height: parent.height;
-            vertical-alignment: center;
-            horizontal-alignment: root.horizontal-alignment;
-            text: root.text;
-            color: black;
-            font-size: 20px;
-        }
+        vertical-alignment: center;
+        horizontal-alignment: root.horizontal-alignment;
+        text: root.text;
+        color: #8b93a3;
+        font-size: root.title-font-size;
+        font-weight: 600;
     }
 
     area := TouchArea {
@@ -119,8 +119,10 @@ export enum SpoolDisplayMode {
 }
 
 component WeightsDisplay inherits Rectangle {
-    background: white;
-    in-out property <length> vert-spacing: 2px;
+    background: #14161c;
+    border-radius: 12px;
+    clip: true;
+    in-out property <length> vert-spacing: 4px;
     in-out property <string> weight-label;
     in-out property <string> weight-empty;
     in-out property <string> weight-full;
@@ -128,43 +130,64 @@ component WeightsDisplay inherits Rectangle {
     in-out property <string> weight-gross;
 
     HorizontalLayout {
-        spacing: 10px;
+        spacing: 0px;
         padding: 0px;
-        TitledText {
-            vert-spacing: vert-spacing;
-            label: "Label";
-            text: weight-label;
+
+        HorizontalLayout {
+            horizontal-stretch: 4;
+            padding: 12px;
+            spacing: 0px;
+            TitledText {
+                horizontal-stretch: 1;
+                vert-spacing: vert-spacing;
+                label: "Label";
+                text: weight-label;
+            }
+
+            TitledText {
+                horizontal-stretch: 1;
+                vert-spacing: vert-spacing;
+                label: "Empty";
+                text: weight-empty;
+            }
+
+            TitledText {
+                horizontal-stretch: 1;
+                vert-spacing: vert-spacing;
+                label: "Full";
+                text: weight-full;
+            }
+
+            TitledText {
+                horizontal-stretch: 1;
+                vert-spacing: vert-spacing;
+                label: "Net";
+                text: weight-net;
+            }
         }
 
-        TitledText {
-            vert-spacing: vert-spacing;
-            label: "Empty";
-            text: weight-empty;
-        }
-
-        TitledText {
-            vert-spacing: vert-spacing;
-            label: "Full";
-            text: weight-full;
-        }
-
-        TitledText {
-            vert-spacing: vert-spacing;
-            label: "Net";
-            text: weight-net;
-        }
-
-        TitledText {
-            vert-spacing: vert-spacing;
-            label: "Gross";
-            text: weight-gross;
+        Rectangle {
+            horizontal-stretch: 1;
+            background: #2d5340;
+            border-radius: 12px;
+            HorizontalLayout {
+                padding: 12px;
+                TitledText {
+                    horizontal-stretch: 1;
+                    vert-spacing: vert-spacing;
+                    label: "Gross";
+                    text: weight-gross;
+                    label-color: #c5ddce;
+                    text-color: #f4f7f2;
+                }
+            }
         }
     }
 }
 
 export component SpoolDisplay inherits Rectangle {
     in-out property <UiSpoolRecordDisplay> spool-display;
-    background: white;
+    background: #0b0c10;
     property <color> filament-color: spool-display.color;
     in property <bool> show-title: true;
     in property <string> title: "";
@@ -182,28 +205,32 @@ export component SpoolDisplay inherits Rectangle {
         VerticalLayout {
             alignment: stretch;
             vertical-stretch: 1;
-            padding: 10px;
-            padding-bottom: 5px;
+            padding: 16px;
+            padding-bottom: 8px;
+            spacing: 2px;
             property <string> brand: spool-display.spool-record.brand == "" ? "" : "\{spool-display.spool-record.brand} ";
             property <string> material-subtype: spool-display.spool-record.material-subtype == "" ? "" : " \{spool-display.spool-record.material_subtype}";
             property <string> color-name: spool-display.spool-record.color-name == "" ? "" : " \{spool-display.spool-record.color-name}";
             MyText {
-                vertical-stretch: 1;
-                horizontal-alignment: center;
+                vertical-stretch: 0;
+                horizontal-alignment: left;
+                font-size: 22px;
+                font-weight: 700;
                 text: "\{brand}\{spool-display.spool-record.material-type}\{material-subtype}\{color-name}";
+                color: #f2eee4;
             }
 
             LabeledInfo {
                 vertical-stretch: mode == SpoolDisplayMode.ImportTagDefinition ? 2 : 1;
-                label: "Note:";
-                text: spool-display.spool-record.note;
+                label: "Note";
+                text: spool-display.spool-record.note == "" ? "—" : spool-display.spool-record.note;
                 text-wrap: mode == SpoolDisplayMode.ImportTagDefinition ? word-wrap : no-wrap;
             }
 
             LabeledInfo {
                 vertical-stretch: 1;
-                label: "In Slicer:";
-                text: spool-display.slicer-filament-name;
+                label: "In Slicer";
+                text: spool-display.slicer-filament-name == "" ? "—" : spool-display.slicer-filament-name;
             }
 
             HorizontalLayout {
@@ -211,8 +238,8 @@ export component SpoolDisplay inherits Rectangle {
                 alignment: space-between;
                 LabeledInfo {
                     horizontal-stretch: 1;
-                    label: "Color:";
-                    text: "\{spool-display.spool-record.color-code}";
+                    label: "Color";
+                    text: spool-display.spool-record.color-code == "" ? "—" : "\{spool-display.spool-record.color-code}";
                 }
             }
 
@@ -221,32 +248,32 @@ export component SpoolDisplay inherits Rectangle {
                 alignment: space-between;
                 LabeledInfo {
                     horizontal-stretch: 1;
-                    label: "PA(K):";
-                    text: spool-display.pa-line1;
+                    label: "PA (K)";
+                    text: spool-display.pa-line1 == "" ? "—" : spool-display.pa-line1;
                 }
                 LabeledInfo {
-                    label: "Temps: ";
+                    label: "Temps";
                     label-width: 70px;
-                    text: "\{spool-display.temp-min}°C - \{spool-display.temp-max}°C";
+                    text: "\{spool-display.temp-min}°C – \{spool-display.temp-max}°C";
                 }
             }
 
             if mode != SpoolDisplayMode.ImportTagDefinition: LabeledInfo {
                 vertical-stretch: 1;
-                label: "Location:";
-                text: spool-display.assigned-location!="" ? spool-display.assigned-location + " (Assigned)" : "No Assigned Location";
+                label: "Location";
+                text: spool-display.assigned-location!="" ? spool-display.assigned-location + " (Assigned)" : "None assigned";
+            }
+
+            if mode != SpoolDisplayMode.ImportTagDefinition: Text {
+                vertical-stretch: 0;
+                font-size: 14px;
+                font-weight: 700;
+                color: #8b93a3;
+                text: "WEIGHTS";
             }
 
             HorizontalLayout {
                 vertical-stretch: 1;
-                VerticalLayout {
-                    LabeledInfo {
-                        width: 90px;
-                        label: "Weights:";
-                        text: "";
-                    }
-                }
-
                 WeightsDisplay {
                     pure function calc-net(weight_new: int, weight_current: int, weight_core: int, weight_advertised: int, consumed_since_weight: float) -> int {
                         // code from inventory adjusted to here

@@ -23,7 +23,9 @@ component SpoolDisplayStep inherits Rectangle {
         }
 
         HorizontalLayout {
-            height: 56px;
+            height: 64px;
+            padding: 8px;
+            spacing: 8px;
             if AppState.spool-scale-state != SpoolScaleState.NotAvailable: MyButton {
                 enabled: AppState.spool-staging-state != SpoolStagingState.Empty && AppState.is-scale-usable-now();
                 text: "Quick Weight";
@@ -57,9 +59,7 @@ component SpoolDisplayStep inherits Rectangle {
 }
 
 component OperationSelectionStep inherits Rectangle {
-    width:480px;
-    height:320px;
-    background: white;
+    background: #0b0c10;
     pure function linked-tag-count() -> int {
         return AppBackend.spool-tag-count(AppState.spool-staging-info.spool-record.id);
     }
@@ -183,7 +183,7 @@ component OperationSelectionStep inherits Rectangle {
 }
 
 component UnlinkSelectionStep inherits Rectangle {
-    background: white;
+    background: #0b0c10;
     property <UnlinkSelection> unlink-selection: UnlinkSelection.None;
 
     function pressed(selection: UnlinkSelection) {
@@ -242,7 +242,7 @@ component UnlinkSelectionStep inherits Rectangle {
 }
 
 component MarkEmptyConfirmStep inherits Rectangle {
-    background: white;
+    background: #0b0c10;
 
     VerticalLayout {
         Title {
@@ -301,7 +301,7 @@ component MarkEmptyConfirmStep inherits Rectangle {
 component PlacePickSpool inherits Rectangle {
     // width: 480px;
     // height: 320px;
-    background: white;
+    background: #0b0c10;
     in property <UiSpoolRecordDisplay> spool-display;
 
     property <string> brand: spool-display.spool-record.brand == "" ? "" : "\{spool-display.spool-record.brand} ";
@@ -360,7 +360,7 @@ component PlacePickSpool inherits Rectangle {
 }
 
 component ManualStorageRackStep inherits Rectangle {
-    background: white;
+    background: #0b0c10;
     VerticalLayout {
         Selector {
             vertical-stretch: 1;
@@ -393,7 +393,7 @@ component ManualStorageInfo inherits LabeledText {
 }
 
 component ManualStorageSummary inherits Rectangle {
-    background: white;
+    background: #0b0c10;
     in property <length> summary-width: 180px;
     width: summary-width;
     pure function show-bay() -> bool {
@@ -463,7 +463,7 @@ component ManualStorageSummary inherits Rectangle {
 }
 
 component ManualStorageNumberStep inherits Rectangle {
-    background: white;
+    background: #0b0c10;
     in property <string> title;
     in property <int> max-value;
     in property <int> number;
@@ -517,7 +517,7 @@ component ManualStorageNumberStep inherits Rectangle {
 }
 
 component ManualStorageCompleteStep inherits Rectangle {
-    background: white;
+    background: #0b0c10;
     in property <UiSpoolRecordDisplay> spool-display;
     property <string> brand: spool-display.spool-record.brand == "" ? "" : "\{spool-display.spool-record.brand} ";
     property <string> material-subtype: spool-display.spool-record.material-subtype == "" ? "" : " \{spool-display.spool-record.material_subtype}";
@@ -572,7 +572,7 @@ component ManualStorageCompleteStep inherits Rectangle {
 component SelectSpoolToLoadStep inherits Rectangle {
     // width: 480px;
     // height: 320px;
-    background: white;
+    background: #0b0c10;
     VerticalLayout {
         Title {
             text: "Enter Spool ID to Load to Staging";

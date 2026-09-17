@@ -1,21 +1,20 @@
 import { MyButton } from "./framework/widgets.slint";
 import { AppBackend, AppState, Printer } from "app.slint";
 import { Title } from "framework/widgets.slint";
-import { Utils } from "utils.slint";
 
 export component Title inherits Rectangle {
     in-out property <string> text;
     height: 40px;
-    background: green.brighter(1.0);
-    border-color: black;
-    border-width: 1px;
+    background: @linear-gradient(180deg, #1a1c24 0%, #101116 100%);
+    border-width: 0px;
     Text {
         vertical-alignment: center;
         horizontal-alignment: center;
         height: 40px;
         text: text;
         font-size: 20px;
-        color: Utils.contrasting_color(root.background);
+        font-weight: 700;
+        color: #ffffff;
     }
 }
 
@@ -25,18 +24,25 @@ export component SelectPrinterButton inherits MyButton {
     horizontal-alignment: left;
 }
 
-export component SelectPrinter inherits VerticalLayout {
-  callback selected;
-  Title {
-      text: "Select Printer";
-  }
-  for printer[index] in AppState.available_printers: SelectPrinterButton {
-      printer: printer;
-      height: 60px;
-      text: (AppState.curr_printer == index ? "  ✓ ": "      ") + printer.name + (AppState.default_printer == index ? " (Default)" : "") + (printer.connected ? ": Connected" : ": Disconnected");
-      clicked  => {
-        AppBackend.select-printer(printer.id);
-        selected();
-      }
-  }
+export component SelectPrinter inherits Rectangle {
+    callback selected;
+    background: #0b0c10;
+    VerticalLayout {
+        Title {
+            text: "Select Printer";
+        }
+        VerticalLayout {
+            spacing: 8px;
+            padding: 8px;
+            for printer[index] in AppState.available_printers: SelectPrinterButton {
+                printer: printer;
+                height: 60px;
+                text: (AppState.curr_printer == index ? "  ✓ " : "      ") + printer.name + (AppState.default_printer == index ? " (Default)" : "") + (printer.connected ? ": Connected" : ": Disconnected");
+                clicked => {
+                    AppBackend.select-printer(printer.id);
+                    selected();
+                }
+            }
+        }
+    }
 }

@@ -11,15 +11,12 @@ export component SpoolStaging inherits Rectangle {
         title := Rectangle {
             background: AppConsts.title-gradient;
             height: 30px;
+            border-radius: 10px;
             Text {
-                color: white; // Utils.contrasting_color(parent.background); // entered manually white because this cause a panic in slint for some reason
+                color: #d7dce8;
                 text: AppState.spool-staging-state == SpoolStagingState.Empty ? "Staging" : AppState.spool-staging-state == SpoolStagingState.Scanned ? "Scanned" : AppState.spool-staging-state == SpoolStagingState.Encoded ? "Encoded" : "Unloaded";
-                font-size: 20px;
-            }
-
-            title-border := Rectangle {
-                border-color: black;
-                border-width: 1px;
+                font-size: 16px;
+                font-weight: 600;
             }
         }
 
@@ -38,7 +35,9 @@ export component SpoolStaging inherits Rectangle {
                 property <color> representative-color: staging-color-count > 0 ? AppState.spool-staging-info.colors[representative-color-index(staging-color-count)] : AppState.spool-staging-info.color;
                 property <color> staging-text-color: Utils.contrasting_color(representative-color);
                 property <length> staging-stripe-width: staging-color-count > 0 ? self.width / staging-color-count : self.width;
-                background: AppState.spool-staging-state == SpoolStagingState.Empty ? AppConsts.no-color : #00000000;
+                background: AppState.spool-staging-state == SpoolStagingState.Empty ? AppConsts.surface-panel : #00000000;
+                border-radius: 12px;
+                clip: true;
 
                 if AppState.spool-staging-state != SpoolStagingState.Empty
                     && ((staging-color-count == 0 && AppState.spool-staging-info.color.alpha < 255)
@@ -157,7 +156,7 @@ export component SpoolStaging inherits Rectangle {
                 height: parent.height;
 
                 MyText {
-                    color: lightgreen;
+                    color: #0f766e;
                     horizontal-alignment: center;
                     vertical-alignment: center;
 
@@ -168,8 +167,9 @@ export component SpoolStaging inherits Rectangle {
             filament-box-border := Rectangle {
                 width: parent.width;
                 height: parent.height;
-                border-color: black;
-                border-width: 1px;
+                border-color: #00000000;
+                border-width: 0px;
+                border-radius: 12px;
             }
         }
     }

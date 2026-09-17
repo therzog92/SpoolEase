@@ -105,7 +105,7 @@ export component SettingsConfirm inherits VerticalLayout {
                     horizontal-alignment: left;
             // height: 100px;
             text: text;
-                    color: black;
+                    color: #d7dce8;
                     font-size: 20px;
                     wrap: word-wrap;
                 }
@@ -134,7 +134,10 @@ export component SettingsConfirm inherits VerticalLayout {
 
 export component FrameworkSettingsButtons inherits VerticalLayout {
     callback ota-clicked;
+    spacing: 8px;
+    padding: 8px;
     VerticalLayout {
+        spacing: 8px;
         WebConfigButton { }
 
         ResetWifiCredentialsButton { }
@@ -150,7 +153,7 @@ export component FrameworkSettingsButtons inherits VerticalLayout {
 
 // Reset Wifi Credentials
 export component FrameworkSettingsDetails inherits Rectangle {
-    background: white;
+    background: #0b0c10;
     if FrameworkState.reset-wifi-credentials-state == ResetWifiCredentialsState.UserInput: 
         SettingsConfirm {
         title: "Reset Wifi Credentials";
@@ -207,12 +210,12 @@ export component FrameworkSettingsDetails inherits Rectangle {
         Rectangle {
             vertical-stretch: 1;
             width: parent.width;
-            background: FrameworkState.ota-state == OtaState.Failed ? red : FrameworkState.ota-state == OtaState.Completed ? lightgreen : white;
-            border-color: black;
-            border-width: 1px;
+            background: FrameworkState.ota-state == OtaState.Failed ? #fee2e2 : FrameworkState.ota-state == OtaState.Completed ? #d1fae5 : #14161c;
+            border-color: #2e3545;
+            border-width: 0px;
             Text {
                 horizontal-alignment: center;
-                color: black;
+                color: #d7dce8;
                 text: FrameworkState.ota-message;
                 font-size: 20px;
             }
@@ -233,7 +236,7 @@ export component FrameworkSettingsDetails inherits Rectangle {
         alignment: stretch;
         Rectangle {
             height: FrameworkState.display-height - 56px; // TODO: why need to specify height? should be automatic by layout
-            background: white;
+            background: #0b0c10;
             vertical-stretch: 1;
             width: parent.width;
             border-color: black;
@@ -294,6 +297,8 @@ export component Settings inherits Rectangle {
     in-out property <length> y-offset: title.height;
     in-out property <length> buttons-width: self.width - x-offset;
     in-out property <[string]> tabs;
+
+    background: #0b0c10;
 
     property <bool> framework-buttons-visible:  FrameworkState.restart-device-state == RestartDeviceState.NotStarted && FrameworkState.reset-fixed-security-key-state == ResetFixedSecurityKeyState.NotStarted && FrameworkState.ota-state == OtaState.NotStarted && FrameworkState.web-config-state != WebConfigState.Started-STA-Displayed && FrameworkState.web-config-state != WebConfigState.Started-AP && FrameworkState.reset-wifi-credentials-state == ResetWifiCredentialsState.NotStarted;
     in property <bool> framework-tab-selected;

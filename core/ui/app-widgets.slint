@@ -88,67 +88,8 @@ export component ScrollingPills inherits Rectangle {
     in property <length> repeat-gap: 24px;
     in property <length> scroll-step: 2px;
     in property <duration> scroll-interval: 40ms;
-
-    height: content-width > 0px ? pill-height + 4px : 0px;
-    clip: true;
+    height: 0px;
     background: transparent;
-
-    measurer := PillRow {
-        visible: false;
-        pills: root.pills;
-        pill-height: root.pill-height;
-        pill-padding-x: root.pill-padding-x;
-        pill-spacing: root.pill-spacing;
-        pill-font-size: root.pill-font-size;
-    }
-
-    property <length> content-width: measurer.preferred-width;
-    property <length> travel-width: content-width + repeat-gap;
-    property <bool> scroll-started: false;
-    property <length> scroll-offset: 0px;
-
-    scroll-timer := Timer {
-        interval: root.scroll-interval;
-        running: root.content-width > 0px;
-        triggered() => {
-            if root.content-width > root.width {
-                if !root.scroll-started {
-                    root.scroll-started = true;
-                    root.scroll-offset = -root.width;
-                }
-
-                root.scroll-offset += root.scroll-step;
-                if root.scroll-offset >= root.travel-width {
-                    root.scroll-offset -= root.travel-width;
-                }
-            } else {
-                root.scroll-started = false;
-                root.scroll-offset = 0px;
-            }
-        }
-    }
-
-    first-row := PillRow {
-        x: root.content-width > root.width ? (root.scroll-started ? -root.scroll-offset : root.width) : (root.width - root.content-width) / 2;
-        y: (root.height - root.pill-height) / 2;
-        width: root.content-width;
-        pills: root.pills;
-        pill-height: root.pill-height;
-        pill-padding-x: root.pill-padding-x;
-        pill-spacing: root.pill-spacing;
-        pill-font-size: root.pill-font-size;
-    }
-
-    PillRow {
-        x: root.content-width > root.width ? first-row.x + root.travel-width : root.width + root.repeat-gap;
-        y: first-row.y;
-        width: root.content-width;
-        pills: root.pills;
-        pill-height: root.pill-height;
-        pill-padding-x: root.pill-padding-x;
-        pill-spacing: root.pill-spacing;
-        pill-font-size: root.pill-font-size;
-    }
 }
 
 export enum WeightDisplayContent {
@@ -208,15 +149,15 @@ export component LabeledText inherits Rectangle {
     in-out property <bool> label-button: false;
     in-out property <string> label;
     in-out property <string> text;
-    in-out property <color> label-color: blue;
-    in-out property <color> text-color: black;
+    in-out property <color> label-color: #8b93a3;
+    in-out property <color> text-color: #f2eee4;
     in-out property <length> label-width;
     in-out property <TextWrap> text-wrap;
     HorizontalLayout {
         thelabel := MyText {
             width: label-width;
             text: label;
-            color: label-button ? black : label-color;
+            color: label-button ? #d7dce8 : label-color;
         }
 
         MyText {
@@ -244,8 +185,8 @@ export component TitledText inherits Rectangle {
     in-out property <bool> label-button: false;
     in-out property <string> label;
     in-out property <string> text;
-    in-out property <color> label-color: blue;
-    in-out property <color> text-color: black;
+    in-out property <color> label-color: #8b93a3;
+    in-out property <color> text-color: #f2eee4;
     in-out property <TextWrap> text-wrap;
     in-out property <length> vert-spacing;
     VerticalLayout {
@@ -254,7 +195,7 @@ export component TitledText inherits Rectangle {
         thelabel := MyText {
             horizontal-alignment: center;
             text: label;
-            color: label-button ? black : label-color;
+            color: label-button ? #d7dce8 : label-color;
         }
 
         MyText {

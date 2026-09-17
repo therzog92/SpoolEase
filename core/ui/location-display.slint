@@ -25,6 +25,7 @@ component FramedText inherits Rectangle {
         background: inner-background;
         txt := MyText {
             text: text;
+            color: #1a2030;
         }
     }
 }
@@ -47,6 +48,7 @@ export component LocationDisplay inherits Rectangle {
                 border-radius: self.height / 2;
                 MyText {
                     text: "Rack: \{location.rack-name}";
+                    color: #1a2030;
                 }
             }
 

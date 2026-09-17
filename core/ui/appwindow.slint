@@ -151,7 +151,7 @@ export component AppWindow inherits Window {
 
             // Page 1 :  App Window - ControlPanel at the bottom and Storage <-> Slots at the top (swipable left/right)
             if !full-screen-dialog-open(): page1 := Rectangle {
-                background: white;
+                background: AppConsts.surface;
                 height: parent.height;
                 width: parent.width;
                 VerticalLayout {
@@ -179,10 +179,12 @@ export component AppWindow inherits Window {
                             if AppState.no-printers-configured: VerticalLayout {
                                 Rectangle {
                                     width: FrameworkState.display-width;
-                                    border-width: 1px;
-                                    border-color: black;
+                                    border-width: 0px;
+                                    border-radius: 12px;
+                                    background: AppConsts.surface-panel;
                                     MyText {
                                         text: "No Printer Configured - Inventory Mode";
+                                        color: AppConsts.text-on-chrome;
                                     }
                                 }
                             }
@@ -218,6 +220,8 @@ export component AppWindow inherits Window {
         }
 
         if !full-screen-dialog-open(): SelectPrinter {
+            width: FrameworkState.display-width;
+            height: FrameworkState.display-height;
             selected => {
                 AppState.select-printer = false;
                 current-page-x = 0;
@@ -249,7 +253,7 @@ export component AppWindow inherits Window {
         dialog-title: AppState.message-box-title;
         dialog-text: AppState.message-box-text;
         dialog-text2: AppState.message-box-text2;
-        dialog-background: AppState.message-box-type == StatusType.Success ? green.brighter(1.0) : AppState.message-box-type == StatusType.Error ? red : skyblue;
+        dialog-background: AppState.message-box-type == StatusType.Success ? #d1fae5 : AppState.message-box-type == StatusType.Error ? #fee2e2 : #dbeafe;
         dialog-dismissible: AppState.message-box-timeout != -2;
         dialog-button-text: AppState.message-box-timeout == -2 ? "Blocked" : "Ok" + (AppState.message-box-timeout > 0 ? " (\{AppState.message-box-timeout})" : "");
         clicked => {
